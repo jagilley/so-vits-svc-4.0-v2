@@ -58,7 +58,7 @@ def main():
 
     infer_tool.fill_a_to_b(trans, clean_names)
     for clean_name, tran in zip(clean_names, trans):
-        raw_audio_path = f"raw/{clean_name}"
+        raw_audio_path = clean_name
         if "." not in raw_audio_path:
             raw_audio_path += ".wav"
         infer_tool.format_wav(raw_audio_path)
@@ -94,7 +94,8 @@ def main():
                 audio.extend(list(infer_tool.pad_array(_audio, length)))
             key = "auto" if auto_predict_f0 else f"{tran}key"
             cluster_name = "" if cluster_infer_ratio == 0 else f"_{cluster_infer_ratio}"
-            res_path = f'./results/{clean_name}_{key}_{spk}{cluster_name}.{wav_format}'
+            clean_name_for_saving = clean_name.replace("/", "").replace(".wav", "")
+            res_path = f'./results/{clean_name_for_saving}_{key}_{spk}{cluster_name}.{wav_format}'
             soundfile.write(res_path, audio, svc_model.target_sample, format=wav_format)
 
 if __name__ == '__main__':
